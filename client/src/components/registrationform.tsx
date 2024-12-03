@@ -1,5 +1,5 @@
 'use client'
-import fetchAPI from "@/api/fetch";
+//import fetchAPI from "@/api/fetch";
 import { registrationSchema } from "@/validations/registrationschema";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";

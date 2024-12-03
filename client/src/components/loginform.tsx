@@ -6,10 +6,10 @@ import { useAuth } from "@/context/authcontext";
 export default function LoginForm() {
   const [usernameOrEmail, setUsernameOrEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const router = useRouter();
-  const [errors, setErrors] = useState<any>({});
-  const { login, isAuthenticated }: any = useAuth();
+  //const [errorMessage, setErrorMessage] = useState<string>('');
+ // const router = useRouter();
+  //const [errors, setErrors] = useState<any>({});
+  const { login}: any = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
 
   // useEffect(()=> {
