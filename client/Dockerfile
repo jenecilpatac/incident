@@ -4,12 +4,13 @@ FROM node:18-alpine AS build
 # Set the working directory
 WORKDIR /app
 
+# Install pnpm globally
+RUN npm install -g pnpm
+
 # Copy the package.json and package-lock.json to the working directory
 COPY ./package*.json ./
 
 # Install the dependencies
-RUN npm install
-
 RUN pnpm install
 
 # Copy the remaining application files to the working directory
