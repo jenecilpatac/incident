@@ -30,7 +30,7 @@ COPY --from=build /app/public /app/public
 COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 5005
-#EXPOSE 5005
+EXPOSE 5005
 
 # Start NGINX
 CMD ["nginx", "-g", "daemon off;"]

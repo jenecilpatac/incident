@@ -14,6 +14,8 @@ services:
       #- /etc/ssl/private:/etc/ssl/private 
     stdin_open: true
     tty: true
+    expose:
+      - 5005
     networks:
       - nextjs
   
