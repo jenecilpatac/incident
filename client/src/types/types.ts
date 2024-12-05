@@ -11,4 +11,5 @@ export interface AuthContextType {
   hasUserRole: boolean;
   hasTechnicianRole: boolean;
   hasAdminRole: boolean;
+  accessToken: string | null;
 }
