@@ -1,14 +1,12 @@
 version: "3.7"
 
 services:
-  dev:
+  nextjs-prod:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: demo-docker-nextjs-dev
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/.next
+    container_name: nextjs-prod
     ports:
-      - "5005:5005"
+      - "5005:5005"  # Map container port 5005 to host port 5005
+    environment:
+      - NODE_ENV=production

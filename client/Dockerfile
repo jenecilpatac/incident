@@ -1,29 +1,23 @@
-# Base Stage
-FROM node:18 AS base
+# Base Stage: Install dependencies and build the app
+FROM node:18 AS build
 WORKDIR /app
-RUN npm i -g pnpm
+RUN npm install -g pnpm
 COPY package.json pnpm-lock.yaml ./
-
 RUN pnpm install
-
 COPY . .
+RUN pnpm build  # Build the Next.js application
 
-# Build the Next.js application
-RUN pnpm build
-
-# Release Stage
-FROM node:18-alpine3.19 as release
+# Production Stage: Serve pre-built Next.js
+FROM node:18-alpine AS production
 WORKDIR /app
-RUN npm i -g pnpm
-
-# Copy necessary files from the base stage
-COPY --from=base /app/node_modules ./node_modules
-COPY --from=base /app/package.json ./package.json
-COPY --from=base /app/.next ./.next
-COPY --from=base /app/src ./src
+RUN npm install -g pnpm
+COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/public ./public
+COPY --from=build /app/node_modules ./node_modules
 
 # Expose the application port
 EXPOSE 5005
 
-# Start the application in development mode
-CMD ["pnpm", "dev"]
+# Start the application in production mode
+CMD ["pnpm", "start"]
