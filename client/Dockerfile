@@ -22,8 +22,9 @@ RUN pnpm run build
 # Nginx stage
 FROM nginx:alpine
 
-# Copy the built application files from the build stage
+# Copy the built Next.js application files and static assets from the build stage
 COPY --from=build /app/.next /app/.next
+COPY --from=build /app/public /app/public
 
 # Copy the NGINX configuration file
 COPY default.conf /etc/nginx/conf.d/default.conf
