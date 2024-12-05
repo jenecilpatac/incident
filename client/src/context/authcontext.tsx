@@ -10,8 +10,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // const [accessToken, setAccessToken] = useState<string | null>(null);
-  // const [rememberToken, setRememberToken] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  //const [rememberToken, setRememberToken] = useState<string | null>(null);
   const [user, setUser] = useState<any | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userRoles, setUserRoles] = useState<any>(null);
@@ -130,7 +130,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         isAuthenticated,
         isLogout,
-        // accessToken,
+         accessToken,
         // rememberToken,
         login,
         logout,
