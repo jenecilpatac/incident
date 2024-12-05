@@ -17,20 +17,18 @@ services:
     networks:
       - nextjs
   
-  nginx:
-    container_name: nginx
-    image: nginx:alpine
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - ./src:/app/src 
-      - ./default.conf:/etc/nginx/conf.d/default.conf
-      #- /etc/ssl/certs:/etc/ssl/certs         # Mount /etc/ssl/certs
-      #- /etc/ssl/private:/etc/ssl/private  # Mount NGINX config
-    ports:
-      - "5005:5005"  # Expose port 80 for incoming traffic
-    networks:
-      - nextjs
+nginx:
+  container_name: nginx
+  image: nginx:alpine
+  volumes:
+    - ./default.conf:/etc/nginx/conf.d/default.conf  # Mount Nginx configuration file only
+    - ./public:/app/public                          # Static public folder
+    - ./next.config.js:/app/next.config.js          # Optionally mount the Next.js config if needed
+  ports:
+    - "80:5005"  # Map Nginx port to 80
+  networks:
+    - nextjs
+
 networks:
   nextjs:
     driver: bridge
