@@ -23,7 +23,7 @@ COPY --from=base /app/.next ./.next
 COPY --from=base /app/src ./src
 
 # Expose the application port
-EXPOSE 3000
+EXPOSE 5005
 
 # Start the application in development mode
 CMD ["pnpm", "dev"]
