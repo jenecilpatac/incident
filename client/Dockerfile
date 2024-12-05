@@ -1,4 +1,4 @@
-# Use an official Node runtime as a parent image
+# Build stage
 FROM node:18-alpine AS build
 
 # Set the working directory
@@ -10,25 +10,25 @@ RUN npm install -g pnpm
 # Copy the package.json and package-lock.json to the working directory
 COPY ./package*.json ./
 
-# Install the dependencies
+# Install the dependencies using pnpm
 RUN pnpm install
 
 # Copy the remaining application files to the working directory
 COPY . .
 
-# Build the application
-RUN npm run build
+# Build the application using pnpm
+RUN pnpm run build
 
-# Use a lightweight server to serve the static files
+# Nginx stage
 FROM nginx:alpine
 
-# Assuming the build output is in .next directory
-COPY ./.next /app/.next
+# Copy the built application files from the build stage
+COPY --from=build /app/.next /app/.next
 
 # Copy the NGINX configuration file
 COPY default.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80
+# Expose port 5005
 EXPOSE 5005
 
 # Start NGINX
