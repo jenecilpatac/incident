@@ -22,8 +22,8 @@ RUN npm run build
 # Use a lightweight server to serve the static files
 FROM nginx:alpine
 
-# Copy the build files to the NGINX server
-COPY --from=build /app/build /usr/share/nginx/html
+# Assuming the build output is in .next directory
+COPY ./.next /app/.next
 
 # Copy the NGINX configuration file
 COPY default.conf /etc/nginx/conf.d/default.conf
