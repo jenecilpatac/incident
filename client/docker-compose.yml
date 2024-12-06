@@ -1,25 +1,30 @@
 version: '3'
+
 services:
   nextjs:
-    build: .
-    volumes:
-      - ./:/app
-      - /app/node_modules
-    networks:
-      - nextjs
-  nginx:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - PORT=5006
+    expose:
+      - '5006'
+    networks:
+      - app_network
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
     ports:
-      - '5005:5005'
+      - '5005:5005' # External access to Nginx
     depends_on:
       - nextjs
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
     networks:
-      - nextjs
+      - app_network
 
 networks:
-  nextjs:
+  app_network:
     driver: bridge
