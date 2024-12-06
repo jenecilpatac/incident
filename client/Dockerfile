@@ -24,7 +24,7 @@ RUN pnpm run build
 FROM nginx:alpine
 
 # Copy the Next.js static files to the NGINX server's html directory
-COPY --from=build /app/out /usr/share/nginx/html
+COPY --from=build /app/.next /usr/share/nginx/html
 
 # Expose port 80 (standard for HTTP traffic)
 EXPOSE 5006
