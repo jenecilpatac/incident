@@ -19,7 +19,7 @@ services:
     ports:
       - "80:80"  # Exposes Nginx on port 80 for public access
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf  # Copy your custom Nginx config
+      - ./default.conf:/etc/nginx/conf.d/default.conf  # Copy your custom Nginx config
     depends_on:
       - nextjs  # Ensures Nginx starts after Next.js app
     networks:
