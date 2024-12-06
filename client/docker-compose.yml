@@ -7,11 +7,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5006:5006"
-    environment:
-      - NODE_ENV=production
     volumes:
       - .:/app
       - /app/node_modules
+    networks:
+      - nextjs
 
   nginx:
     image: nginx:latest
@@ -19,3 +19,9 @@ services:
       - "80:80"
     volumes:
       - ./default.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - nextjs
+
+networks:
+  nextjs:
+    driver: bridge
