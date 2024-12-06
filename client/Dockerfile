@@ -1,41 +1,32 @@
-# Stage 1: Build the Next.js app
-FROM node:18-alpine AS builder
+# Use an official Node runtime as a parent image
+FROM node:18-alpine AS build
 
+# Set the working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
-COPY package*.json ./
+# Copy the package.json and package-lock.json to the working directory
+COPY ./package*.json ./
+
+# Install the dependencies
 RUN npm install
 
-# Copy all app files and build the Next.js app
-COPY . . 
+# Copy the remaining application files to the working directory
+COPY . .
+
+# Build the application
 RUN npm run build
 
-# Stage 2: Production-ready Next.js app (Running Next.js)
-FROM node:18-alpine AS nextjs
+# Use a lightweight server to serve the static files
+FROM nginx:alpine
 
-WORKDIR /app
+# Copy the build files to the NGINX server
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Copy the built app from the builder stage
-COPY --from=builder /app /app
-
-# Set environment variable for production server
-ENV PORT 5006
-
-# Expose the port the app runs on
-EXPOSE 5006
-
-# Start the Next.js app
-CMD ["npm", "start"]
-
-# Stage 3: Nginx to serve the app
-FROM nginx:alpine AS nginx
-
-# Copy the Nginx configuration file
+# Copy the NGINX configuration file
 COPY default.conf /etc/nginx/conf.d/default.conf
 
-# Expose Nginx port
-EXPOSE 5005
+# Expose port 80
+EXPOSE 5006
 
-# Start Nginx
+# Start NGINX
 CMD ["nginx", "-g", "daemon off;"]
