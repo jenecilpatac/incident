@@ -1,28 +1,25 @@
-version: '3'
+version: '3.8'
 
 services:
-  # Next.js App
   nextjs:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: nextjs-app
-    networks:
-      - nextjs-network
-
-  # Nginx (reverse proxy)
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
     ports:
-      - "5006:5006"  # Exposes Nginx on port 80 for public access
+      - "5006:5006"
+    environment:
+      - NODE_ENV=production
     volumes:
-      - ./default.conf:/etc/nginx/conf.d/default.conf  # Copy your custom Nginx config
+      - .:/app
+      - /app/node_modules
     depends_on:
-      - nextjs  # Ensures Nginx starts after Next.js app
-    networks:
-      - nextjs-network
+      - nginx
 
-networks:
-  nextjs-network:
-    driver: bridge
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./default.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - nextjs

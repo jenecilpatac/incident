@@ -1,32 +1,36 @@
-# Build stage
-FROM node:18 as build
+# Use a Node.js base image
+FROM node:18 AS builder
+
+# Set working directory
 WORKDIR /app
 
-# Install pnpm globally
-RUN npm install -g pnpm
+# Copy package files
+COPY package*.json ./
+COPY pnpm-lock.yaml ./
 
-# Copy files
+# Install dependencies
+RUN npm install -g pnpm && pnpm install
+
+# Copy all files
 COPY . .
 
-# First, install with npm (if necessary for some compatibility)
-RUN npm install
-
-# Now, install dependencies with pnpm
-RUN pnpm install
-
-# Run the build
+# Build the Next.js app
 RUN pnpm run build
 
-# Production stage (SSR with Next.js)
-FROM node:18 as production
+# Use a minimal base image for the production stage
+FROM node:18-alpine AS runner
+
+# Set working directory
 WORKDIR /app
 
-# Install pnpm in the production image as well
-RUN npm install -g pnpm
+# Copy only necessary files from the builder stage
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/node_modules ./node_modules
 
-# Copy the build from the build stage
-COPY --from=build /app /app
-
+# Expose the port Next.js runs on
 EXPOSE 5006
 
-CMD ["pnpm", "start"]
+# Start the Next.js application
+CMD ["node_modules/.bin/next", "start"]
