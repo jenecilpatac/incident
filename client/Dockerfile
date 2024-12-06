@@ -8,32 +8,33 @@ COPY package*.json ./
 RUN npm install
 
 # Copy all app files and build the Next.js app
-COPY . .
+COPY . . 
 RUN npm run build
 
-# Stage 2: Production-ready image
-FROM node:18-alpine
+# Stage 2: Production-ready Next.js app (Running Next.js)
+FROM node:18-alpine AS nextjs
 
 WORKDIR /app
 
 # Copy the built app from the builder stage
-COPY --from=builder /app ./
+COPY --from=builder /app /app
 
-# Set the environment variable for the production server
+# Set environment variable for production server
 ENV PORT 5006
 
-# Expose the desired port
+# Expose the port the app runs on
 EXPOSE 5006
 
-# Run the Next.js app
+# Start the Next.js app
 CMD ["npm", "start"]
 
-FROM nginx:alpine
+# Stage 3: Nginx to serve the app
+FROM nginx:alpine AS nginx
 
-# Copy the Nginx configuration
+# Copy the Nginx configuration file
 COPY default.conf /etc/nginx/conf.d/default.conf
 
-# Expose the Nginx port
+# Expose Nginx port
 EXPOSE 5005
 
 # Start Nginx

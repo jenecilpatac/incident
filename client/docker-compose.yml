@@ -3,21 +3,21 @@ version: '3'
 services:
   nextjs:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: . 
+      dockerfile: Dockerfile # The single Dockerfile for both Nginx and Next.js
     environment:
       - PORT=5006
     expose:
-      - '5006'
+      - '5006'  # Internal communication with Nginx
     networks:
       - app_network
 
   nginx:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: . 
+      dockerfile: Dockerfile # Same Dockerfile but Nginx will serve the proxy
     ports:
-      - '5005:5005' # External access to Nginx
+      - '5005:5005'  # Expose port 5005 externally for Nginx
     depends_on:
       - nextjs
     volumes:
