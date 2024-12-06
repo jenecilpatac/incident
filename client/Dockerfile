@@ -19,7 +19,6 @@ COPY . .
 
 # Build the Next.js app (static export)
 RUN pnpm run build
-RUN pnpm run export
 
 # Use NGINX to serve the built static files
 FROM nginx:alpine
