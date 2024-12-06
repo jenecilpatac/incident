@@ -11,25 +11,23 @@ WORKDIR /app
 COPY ./package*.json ./
 COPY ./pnpm-lock.yaml ./
 
-# Install the dependencies using pnpm
+# Install dependencies using pnpm
 RUN pnpm install
 
-# Copy the remaining application files to the working directory
+# Copy the remaining application files
 COPY . .
 
-# Build the application using pnpm
+# Build the Next.js app (static export)
 RUN pnpm run build
+RUN pnpm run export
 
-# Use a lightweight server to serve the static files
+# Use NGINX to serve the built static files
 FROM nginx:alpine
 
-# Copy the build files from the first stage to the NGINX server
-COPY --from=build /app/.next /usr/share/nginx/html
+# Copy the Next.js static files to the NGINX server's html directory
+COPY --from=build /app/out /usr/share/nginx/html
 
-# Copy the NGINX configuration file
-COPY default.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80
+# Expose port 80 (standard for HTTP traffic)
 EXPOSE 5006
 
 # Start NGINX
