@@ -15,7 +15,7 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: Dockerfile.nginx
+      dockerfile: Dockerfile
     ports:
       - '5005:5005' # External access to Nginx
     depends_on:
