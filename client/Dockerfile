@@ -27,6 +27,6 @@ RUN npm install -g pnpm
 # Copy the build from the build stage
 COPY --from=build /app /app
 
-EXPOSE 3000
+EXPOSE 5006
 
 CMD ["pnpm", "start"]
