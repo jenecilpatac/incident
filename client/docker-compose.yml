@@ -2,11 +2,11 @@ version: '3'
 services:
   nextjs:
     build: .
-    ports:
-      - '5005:5005'
     volumes:
       - ./:/app
       - /app/node_modules
+    networks:
+      - nextjs
   nginx:
     build:
       context: .
@@ -17,3 +17,9 @@ services:
       - nextjs
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - nextjs
+
+networks:
+  nextjs:
+    driver: bridge
