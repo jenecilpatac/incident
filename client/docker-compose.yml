@@ -12,6 +12,7 @@ services:
       - /app/node_modules
     networks:
       - nextjs
+    hostname: nextjs 
 
   nginx:
     image: nginx:latest
