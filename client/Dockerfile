@@ -1,34 +1,22 @@
-# Use an official Node runtime as a parent image
-FROM node:18-alpine AS build
-
-# Install pnpm globally
-RUN npm install -g pnpm
-
-# Set the working directory
+# Build stage
+FROM node:18 as build
 WORKDIR /app
 
-# Copy the package.json and pnpm-lock.yaml to the working directory
-COPY ./package*.json ./
-COPY ./pnpm-lock.yaml ./
-
-# Install dependencies using pnpm
-RUN pnpm install
-
-# Copy the remaining application files
+# Copy files
 COPY . .
 
-# Build the Next.js app (static export)
+# First, install with npm (if necessary for some compatibility)
+RUN npm install
+
+# Now, install dependencies with pnpm
+RUN pnpm install
+
+# Run the build
 RUN pnpm run build
 
-# Use NGINX to serve the built static files
-FROM nginx:alpine
-
-# Copy the Next.js static files to the NGINX server's html directory
-# The output directory for static export is 'out', not '.next'
-COPY --from=build /app/out /usr/share/nginx/html
-
-# Expose port 80 (standard for HTTP traffic)
+# Production stage (SSR with Next.js)
+FROM node:18 as production
+WORKDIR /app
+COPY --from=build /app /app
 EXPOSE 5006
-
-# Start NGINX
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["pnpm", "start"]
