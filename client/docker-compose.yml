@@ -3,27 +3,29 @@ version: '3'
 services:
   nextjs:
     build:
-      context: . 
-      dockerfile: Dockerfile # The single Dockerfile for both Nginx and Next.js
+      context: .
+      dockerfile: Dockerfile
     environment:
       - PORT=5006
     expose:
-      - '5006'  # Internal communication with Nginx
+      - "5006"  # Internal Docker network port for Next.js
     networks:
       - app_network
+    restart: always  # To ensure the Next.js app restarts if it fails
 
   nginx:
     build:
-      context: . 
-      dockerfile: Dockerfile # Same Dockerfile but Nginx will serve the proxy
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - '5005:5005'  # Expose port 5005 externally for Nginx
+      - "5005:5005"  # Expose Nginx to the host machine on port 5005
     depends_on:
-      - nextjs
+      - nextjs  # Ensure Next.js is up before Nginx starts
     volumes:
-      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - ./default.conf:/etc/nginx/conf.d/default.conf  # Mount Nginx config file
     networks:
       - app_network
+    restart: always  # Ensure Nginx restarts if something fails
 
 networks:
   app_network:
