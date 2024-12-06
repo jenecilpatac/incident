@@ -6,8 +6,7 @@
     "dev": "set PORT=5006 && next dev",
     "build": "next build",
     "start": "next start -p 5006",
-    "lint": "next lint",
-    "export": "next export"
+    "lint": "next lint"
   },
   "dependencies": {
     "js-cookie": "^3.0.5",
