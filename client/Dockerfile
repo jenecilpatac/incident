@@ -2,6 +2,9 @@
 FROM node:18 as build
 WORKDIR /app
 
+# Install pnpm globally
+RUN npm install -g pnpm
+
 # Copy files
 COPY . .
 
@@ -17,6 +20,13 @@ RUN pnpm run build
 # Production stage (SSR with Next.js)
 FROM node:18 as production
 WORKDIR /app
+
+# Install pnpm in the production image as well
+RUN npm install -g pnpm
+
+# Copy the build from the build stage
 COPY --from=build /app /app
-EXPOSE 5006
+
+EXPOSE 3000
+
 CMD ["pnpm", "start"]
