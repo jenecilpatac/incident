@@ -26,13 +26,13 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: |
-          cd frontend  # Ensure you are in the correct directory
+          cd client  # Ensure you are in the correct directory
           npm install  # Install frontend dependencies
 
       # Build the frontend
       - name: Build frontend
         run: |
-          cd frontend
+          cd client
           npm run build
 
       # Deploy frontend to server
