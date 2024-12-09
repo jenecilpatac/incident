@@ -36,4 +36,5 @@ EXPOSE 5006
 ENV NODE_ENV production
 
 # Start the application
-CMD ["npm", "run", "start", "--", "-p", "5006"]
+CMD ["next", "start", "-p", "5006"]
+
