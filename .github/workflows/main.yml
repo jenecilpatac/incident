@@ -35,10 +35,10 @@ jobs:
           cd client
           npm run build  # Build the app
 
-      # Step 5: Deploy the frontend to the server
-      - name: Deploy frontend to Server
-        run: |
-          echo "Deploying frontend..."
-          ssh -i ${{ secrets.SSH_KEY }} user@your-server-ip "cd /path/to/client && git pull && npm run start"  # Deploy to server
-        env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}  # Use SSH key for authentication
+      # # Step 5: Deploy the frontend to the server
+      # - name: Deploy frontend to Server
+      #   run: |
+      #     echo "Deploying frontend..."
+      #     ssh -i ${{ secrets.SSH_KEY }} user@your-server-ip "cd /path/to/client && git pull && npm run start"  # Deploy to server
+      #   env:
+      #     SSH_KEY: ${{ secrets.SSH_KEY }}  # Use SSH key for authentication
