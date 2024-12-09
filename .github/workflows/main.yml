@@ -13,32 +13,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout your code
+      # Step 1: Checkout your code from GitHub
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Set up Node.js for Next.js
+      # Step 2: Set up a compatible Node.js version (>=18)
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '18'  # Or use '20' if you prefer
 
-      # Install dependencies
+      # Step 3: Install dependencies for the frontend (Next.js)
       - name: Install dependencies
         run: |
-          cd client  # Ensure you are in the correct directory
+          cd client  # Go to your frontend directory (ensure the folder is named 'client')
           npm install  # Install frontend dependencies
 
-      # Build the frontend
+      # Step 4: Build the frontend (Next.js)
       - name: Build frontend
         run: |
           cd client
-          npm run build
+          npm run build  # Build the app
 
-      # Deploy frontend to server
+      # Step 5: Deploy the frontend to the server
       - name: Deploy frontend to Server
         run: |
           echo "Deploying frontend..."
-          ssh -i ${{ secrets.SSH_KEY }} user@your-server-ip "cd /path/to/frontend && git pull && npm run start"
+          ssh -i ${{ secrets.SSH_KEY }} user@your-server-ip "cd /path/to/client && git pull && npm run start"  # Deploy to server
         env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}  # Use SSH key for authentication
