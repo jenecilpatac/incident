@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      container-name: nextjs
+    container_name: nextjs
     volumes:
       - .:/app
       - /app/node_modules
@@ -15,7 +15,7 @@ services:
 
   nginx:
     image: nginx:latest
-    container-name: nextjs-nginx
+    container_name: nextjs-nginx
     ports:
       - "5006:5006"
     volumes:
