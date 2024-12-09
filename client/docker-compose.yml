@@ -5,8 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "5006:5006"
     volumes:
       - .:/app
       - /app/node_modules
@@ -17,7 +15,7 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - "80:80"
+      - "5006:5006"
     volumes:
       - ./default.conf:/etc/nginx/nginx.conf:ro
     networks:
