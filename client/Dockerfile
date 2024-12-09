@@ -14,6 +14,8 @@ RUN npm install -g pnpm && pnpm install
 # Copy all files into the container
 COPY . .
 
+RUN npm run build
+
 # Build the Next.js app (this will generate the .next folder)
 RUN pnpm run build
 
