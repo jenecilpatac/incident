@@ -17,26 +17,34 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Setup Node.js environment
+      # Step 2: Debug Directory Structure (Optional)
+      - name: Debug Directory Structure
+        run: ls -la
+        shell: bash
+
+      # Step 3: Setup Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Use your Node.js version
+          node-version: 18 # Specify your Node.js version
 
-      # Step 3: Install dependencies
+      # Step 4: Install dependencies
       - name: Install Dependencies
         run: |
           npm install -g pnpm
           pnpm install
+        working-directory: ./client # Use if your `package.json` is in a subdirectory like `frontend`
 
-      # Step 4: Lint the code
+      # Step 5: Lint the code
       - name: Run Lint
         run: pnpm run lint
+        working-directory: ./client # Adjust for your directory structure
 
-
-      # Step 5: Build the application
+      # Step 6: Build the application
       - name: Build Application
         run: pnpm run build
+        working-directory: ./client # Adjust for your directory structure
+
 
       # # Step 5: Deploy the frontend to the server
       # - name: Deploy frontend to Server
