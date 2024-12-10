@@ -28,13 +28,12 @@ jobs:
         run: |
           cd client  # Go to your frontend directory (ensure the folder is named 'client')
           npm install  # Install frontend dependencies
-          pnpm install
 
       # Step 4: Build the frontend (Next.js)
       - name: Build frontend
         run: |
           cd client
-          pnpm run build  # Build the app
+          npm run build  # Build the app
 
       # # Step 5: Deploy the frontend to the server
       # - name: Deploy frontend to Server
