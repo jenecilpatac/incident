@@ -23,22 +23,15 @@ jobs:
           git config user.name "jenecilpatac"
           git config user.email "jenecilpatac@gmail.com"
 
-      # Step 3: Check for Modified Files
-      - name: Detect Changes
-        run: |
-          if git diff-index --quiet HEAD --; then
-            echo "No changes detected. Exiting workflow."
-            exit 0
-          fi
-
-      # Step 4: Commit changes
-      - name: Commit Changes
+      # Step 3: Commit the changes
+      - name: Commit changes
         run: |
           git add .
-          git commit -m "Auto commit: updated files"
+          git commit -m "Auto commit: update the file with new changes" || echo "No changes to commit"
+        continue-on-error: true  # Prevent failure if no changes exist
 
-      # Step 5: Push Changes to the Repository
-      - name: Push Changes
+      # Step 4: Push changes to the repository
+      - name: Push changes
         run: |
           git push origin HEAD:main
         env:
