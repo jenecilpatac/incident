@@ -36,7 +36,7 @@
 # ENV NODE_ENV production
 
 # # Start the application
-# CMD ["next", "start", "-p", "5006"]dfff
+# CMD ["next", "start", "-p", "5006"]
 
 FROM node:18 AS build
 

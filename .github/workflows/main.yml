@@ -28,11 +28,69 @@ jobs:
         run: |
           git add .
           git commit -m "Auto commit: update the file with new changes" || echo "No changes to commit"
-        continue-on-error: true  # Prevent failure if no changes exist
+        continue-on-error: true  # In case there are no changes, this prevents the job from failing
 
       # Step 4: Push changes to the repository
       - name: Push changes
         run: |
-          git push origin HEAD:main
+           git push https://github.com/${{ github.repository }} HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+    # steps:
+    #   # Step 1: Checkout the code
+    #   - name: Checkout Code
+    #     uses: actions/checkout@v3
+
+    #   # Step 2: Debug Directory Structure (Optional)
+    #   - name: Debug Directory Structure
+    #     run: ls -la
+    #     shell: bash
+
+    #   # Step 3: Setup Node.js environment
+    #   - name: Set up Node.js
+    #     uses: actions/setup-node@v3
+    #     with:
+    #       node-version: 18 # Specify your Node.js version
+
+    #   # Step 4: Install dependencies
+    #   - name: Install Dependencies
+    #     run: |
+    #       npm install -g pnpm
+    #       pnpm install
+    #     working-directory: ./client # Use if your `package.json` is in a subdirectory like `frontend`
+
+    #   # Step 5: Run TypeScript type checking
+    #   - name: Run Type Check
+    #     run: pnpm run typecheck # or tsc --noEmit to check types without outputting JS
+    #     working-directory: ./client
+
+    #   # Step 6: Lint the code
+    #   - name: Run Lint
+    #     run: pnpm run lint
+    #     working-directory: ./client # Adjust for your directory structure
+
+    #   # Step 7: Build the application
+    #   - name: Build Application
+    #     run: pnpm run build
+    #     working-directory: ./client # Adjust for your directory structure
+
+
+      #  Step 8: Set up SSH and Docker for deployment
+      # - name: Set up SSH
+      #   uses: appleboy/ssh-action@v0.1.5
+      #   with:
+      #     host: ${{ secrets.HOST }}  # Ubuntu server IP or domain
+      #     username: ${{ secrets.USERNAME }}  # SSH username
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH private key (add it in GitHub secrets)
+      #     port: 22  # SSH port, 22 by default
+      #     script: |
+      #       # Step 3: Pull the latest changes on the server
+      #       cd /home/webserver/systems/incident/client  # Change this to the directory of your project on the server
+      #       git pull  # Pull the latest changes from the main branch
+
+      #       # Step 4: Build and restart the Docker containers using Docker Compose
+      #       docker-compose down  # Stop and remove the current containers
+      #       docker-compose up --build -d  # Build and start the containers in detached mode
+
