@@ -13,27 +13,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout your code from GitHub
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-      # Step 2: Set up a compatible Node.js version (>=18)
+      # Step 2: Setup Node.js environment
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Or use '20' if you prefer
+          node-version: 18 # Use your Node.js version
 
-      # Step 3: Install dependencies for the frontend (Next.js)
-      - name: Install dependencies
+      # Step 3: Install dependencies
+      - name: Install Dependencies
         run: |
-          cd client  # Go to your frontend directory (ensure the folder is named 'client')
-          npm install  # Install frontend dependencies
+          npm install -g pnpm
+          pnpm install
 
-      # Step 4: Build the frontend (Next.js)
-      - name: Build frontend
-        run: |
-          cd client
-          npm run build  # Build the app
+      # Step 4: Lint the code
+      - name: Run Lint
+        run: pnpm run lint
+
+
+      # Step 5: Build the application
+      - name: Build Application
+        run: pnpm run build
 
       # # Step 5: Deploy the frontend to the server
       # - name: Deploy frontend to Server
