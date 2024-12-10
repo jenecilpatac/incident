@@ -38,6 +38,7 @@ jobs:
       # Step 5: Run TypeScript type checking
       - name: Run Type Check
         run: pnpm run typecheck # or tsc --noEmit to check types without outputting JS
+        working-directory: ./client
 
       # Step 6: Lint the code
       - name: Run Lint
