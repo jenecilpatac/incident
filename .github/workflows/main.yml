@@ -3,39 +3,42 @@ name: Frontend CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - main  # Trigger on push to main, can be adjusted to your preferred branch
   pull_request:
     branches:
-      - main
+      - main  # Trigger when a pull request is created targeting main
 
 jobs:
-  build-and-deploy:
+  auto-commit-push:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
-      - name: Checkout Code
+      # Step 1: Checkout the code from the repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
       # Step 2: Set up Git
       - name: Set up Git
         run: |
-          git config user.name "jenecilpatac"
+          git config user.name "jenecil"
           git config user.email "jenecilpatac@gmail.com"
 
-      # Step 3: Commit the changes
-      - name: Commit changes
+      # Step 3: Stage all changes (git add .)
+      - name: Stage changes
         run: |
           git add .
-          git commit -m "Auto commit: update the file with new changes" || echo "No changes to commit"
-        continue-on-error: true  # In case there are no changes, this prevents the job from failing
-
-      # Step 4: Push changes to the repository
-      - name: Push changes
+        
+      # Step 4: Commit changes (if any changes exist)
+      - name: Commit changes
         run: |
-           git push https://github.com/${{ github.repository }} HEAD:main
+          git commit -m "Auto commit: Changes made on $(date)" || echo "No changes to commit"
+
+      # Step 5: Push changes back to the repository
+      - name: Push changes to the repository
+        run: |
+          git push origin HEAD:main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
 
 
     # steps:
