@@ -1,4 +1,4 @@
-name: Frontend CI/CD Pipelines
+name: Frontend CI/CD Pipeline
 
 on:
   push:
@@ -23,15 +23,22 @@ jobs:
           git config user.name "jenecilpatac"
           git config user.email "jenecilpatac@gmail.com"
 
-      # Step 3: Commit the changes
-      - name: Commit changes
+      # Step 3: Check for Modified Files
+      - name: Detect Changes
+        run: |
+          if git diff-index --quiet HEAD --; then
+            echo "No changes detected. Exiting workflow."
+            exit 0
+          fi
+
+      # Step 4: Commit changes
+      - name: Commit Changes
         run: |
           git add .
-          git commit -m "Auto commit: update the file with new changes" || echo "No changes to commit"
-        continue-on-error: true  # Prevent failure if no changes exist
+          git commit -m "Auto commit: updated files"
 
-      # Step 4: Push changes to the repository
-      - name: Push changes
+      # Step 5: Push Changes to the Repository
+      - name: Push Changes
         run: |
           git push origin HEAD:main
         env:
