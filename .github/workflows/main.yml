@@ -35,18 +35,22 @@ jobs:
           pnpm install
         working-directory: ./client # Use if your `package.json` is in a subdirectory like `frontend`
 
-      # Step 5: Lint the code
+      # Step 5: Run TypeScript type checking
+      - name: Run Type Check
+        run: pnpm run typecheck # or tsc --noEmit to check types without outputting JS
+
+      # Step 6: Lint the code
       - name: Run Lint
         run: pnpm run lint
         working-directory: ./client # Adjust for your directory structure
 
-      # Step 6: Build the application
+      # Step 7: Build the application
       - name: Build Application
         run: pnpm run build
         working-directory: ./client # Adjust for your directory structure
 
 
-      # # Step 5: Deploy the frontend to the server
+      # Step 6: Deploy the frontend to the server
       # - name: Deploy frontend to Server
       #   run: |
       #     echo "Deploying frontend..."
