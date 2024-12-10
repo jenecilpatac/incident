@@ -33,7 +33,7 @@ jobs:
       # Step 4: Push changes to the repository
       - name: Push changes
         run: |
-           git push https://github.com/jenecilpatac/incident HEAD:main
+           git push https://github.com/jenecilpatac/incident.git HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
