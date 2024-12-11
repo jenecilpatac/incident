@@ -5,7 +5,7 @@ FROM node:18 AS builder
 WORKDIR /app
 
 # Copy package.json and package-lock.json (or pnpm-lock.yaml) to install dependencies
-COPY package.json package-lock.json ./
+COPY package.json pnpm-lock.yaml ./
 
 # Install dependencies
 RUN npm install --legacy-peer-deps
