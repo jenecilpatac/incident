@@ -1,4 +1,4 @@
-name: Frontend CI/CD Pipeline
+name: Git Auto Commit CI/CD Pipeline
 
 on:
   push:
