@@ -43,7 +43,7 @@ jobs:
          
        - name: Deploy to server
          run: |
-           ssh webserver@10.10.2.194 'cd /home/webserver/systems/incident/client && git pull origin main && docker-compose down && docker-compose up --build -d'
+           ssh webserver@10.10.2.194 'cd /home/webserver/systems/incident/client && git pull origin main'
 
   # deploy:
   #   environment:
