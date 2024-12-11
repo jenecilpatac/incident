@@ -34,21 +34,21 @@ jobs:
         with:
           path: client/.next  # Path to the build output directory
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v2
 
-    - name: Add SSH key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H webserver >> ~/.ssh/known_hosts
+  #   - name: Add SSH key
+  #     run: |
+  #       mkdir -p ~/.ssh
+  #       echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+  #       chmod 600 ~/.ssh/id_rsa
+  #       ssh-keyscan -H webserver >> ~/.ssh/known_hosts
 
-    - name: Deploy to server
-      run: ssh webserver@10.10.2.194 'cd /home/webserver/systems/incident/client && git pull origin main'
+  #   - name: Deploy to server
+  #     run: ssh webserver@10.10.2.194 'cd /home/webserver/systems/incident/client && git pull origin main'
 
 
   # deploy:
