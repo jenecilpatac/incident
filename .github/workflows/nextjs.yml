@@ -17,27 +17,21 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Debug Client Directory
-        run: ls -la client/
-
       - name: Install pnpm
         run: npm install -g pnpm
 
-      # Install dependencies in client/
       - name: Install Dependencies
         working-directory: client
         run: pnpm install
 
-      # Build the project in client/
-      - name: Build Next.js Project
+      - name: Build with Next.js
         working-directory: client
-        run: pnpm build
+        run: pnpm build  # This generates the .next folder
 
-      # Upload artifact from client/out
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: client/out
+          path: client/.next  # Use the .next folder for deployment
 
   deploy:
     environment:
