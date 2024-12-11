@@ -34,6 +34,17 @@ jobs:
         with:
           path: client/.next  # Path to the build output directory
 
+  deploy:
+     runs-on: ubuntu-latest
+     needs: build
+     steps:
+       - name: Checkout repository
+         uses: actions/checkout@v3
+         
+       - name: Deploy to server
+         run: |
+           ssh webserver@webserver 'cd /home/webserver/systems/incident/client && git pull origin main && docker-compose down && docker-compose up --build -d'
+
   # deploy:
   #   environment:
   #     name: github-pages
