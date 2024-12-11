@@ -10,18 +10,16 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
-      # Detect the package manager based on lock files
+
+      - name: Install pnpm (if needed)
+        run: npm install -g pnpm
+
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -47,7 +45,7 @@ jobs:
         with:
           node-version: "20"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
-      
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
@@ -62,11 +60,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }}-
 
-      # Install dependencies using the detected package manager
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
-      # Build the Next.js site
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
 
