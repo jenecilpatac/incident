@@ -8,16 +8,14 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 # Install dependencies
-RUN npm install --legacy-peer-deps
+RUN npm install -g pnpm && pnpm install
 
 # Copy the rest of the application
 COPY . .
 
 # Build the Next.js application
-RUN npm run build
+RUN pnpm run build
 
-# Install the production dependencies
-RUN npm prune --production
 
 # Use Nginx to serve the app in production
 FROM nginx:alpine
