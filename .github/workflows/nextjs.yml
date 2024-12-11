@@ -14,63 +14,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Debug to verify client directory structure
-      - name: Debug Directory
+      - name: Debug Client Directory
         run: ls -la client/
 
-      # Install pnpm explicitly
       - name: Install pnpm
         run: npm install -g pnpm
 
-      # Detect package manager
-      - name: Detect package manager
-        id: detect-package-manager
-        run: |
-          if [ -f "${{ github.workspace }}/client/pnpm-lock.yaml" ]; then
-            echo "manager=pnpm" >> $GITHUB_OUTPUT
-            echo "command=install --prefix client" >> $GITHUB_OUTPUT
-            echo "runner=pnpm" >> $GITHUB_OUTPUT
-          elif [ -f "${{ github.workspace }}/yarn.lock" ]; then
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            echo "runner=yarn" >> $GITHUB_OUTPUT
-          elif [ -f "${{ github.workspace }}/package-lock.json" ]; then
-            echo "manager=npm" >> $GITHUB_OUTPUT
-            echo "command=ci" >> $GITHUB_OUTPUT
-            echo "runner=npm" >> $GITHUB_OUTPUT
-          else
-            echo "Unable to determine package manager"
-            exit 1
-          fi
+      # Install dependencies in client/
+      - name: Install Dependencies
+        working-directory: client
+        run: pnpm install
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
+      # Build the project in client/
+      - name: Build Next.js Project
+        working-directory: client
+        run: pnpm build
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            client/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('client/**/package-lock.json', 'client/**/yarn.lock', 'client/**/pnpm-lock.yaml') }}-${{ hashFiles('client/**.[jt]s', 'client/**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('client/**/package-lock.json', 'client/**/yarn.lock', 'client/**/pnpm-lock.yaml') }}-
-
-      - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-
-      - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build --prefix client
-
-      - name: Upload artifact
+      # Upload artifact from client/out
+      - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./client/out
+          path: client/out
 
   deploy:
     environment:
